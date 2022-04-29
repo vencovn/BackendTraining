@@ -30,14 +30,19 @@ http.createServer(function(request, response){
                 if(res.length){console.log("exist")}
                 else{
                     const user = [result.name, result.lastname, result.email, result.password];
-                    connection.query("INSERT INTO `users`(`name`, `lastname`, `email`, `pass`) VALUES (?,?,?,?)", user,
+                    connection.query("INSERT INTO `users`(`name`, `lastname`, `email`, `password`) VALUES (?,?,?,?)", user,
                         function (error, result, metadata) {
                             console.log(error);
                             console.log(result);
                         })
                 }
             })
+            connection.query("SELECT * FROM users WHERE email=? AND password=?", [result.email, result.password], function (err, res) {
+                if (res.length){
+                    console.log('Login successful')
+                } else console.log('Login failed')
+            })
         }
-        response.end("Данные успешно получены");
+        response.end("Data received successfully");
     });
 }).listen(3000);

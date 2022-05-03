@@ -14,7 +14,7 @@
   <div class="container">
     <h1 class="my-5 text-center">Login</h1>
     <div class="col-5 mx-auto">
-      <form action="http://localhost:3000" method="post">
+      <form onsubmit="sendForm(this); return false;">
         <div class="mb-3">
           <input name="email" type="email" class="form-control" placeholder="Email">
         </div>
@@ -28,5 +28,18 @@
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  <script>
+    //onsubmit="sendForm(this); return false;"
+    function sendForm(form) {
+      const formData = new FormData(form);
+      fetch('/login', {
+        method: 'post',
+        body: formData
+      }).then(response => response.text())
+              .then(result => {
+                console.log(result);
+              })
+    }
+  </script>
 </body>
 </html>

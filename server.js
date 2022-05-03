@@ -26,17 +26,17 @@ http.createServer(function(request, response){
                 } else
                     console.log("success");
             });
-            connection.query("SELECT id FROM users WHERE email=?", [result.email], function (err, res){
-                if(res.length){console.log("exist")}
-                else{
-                    const user = [result.name, result.lastname, result.email, result.password];
-                    connection.query("INSERT INTO `users`(`name`, `lastname`, `email`, `password`) VALUES (?,?,?,?)", user,
-                        function (error, result, metadata) {
-                            console.log(error);
-                            console.log(result);
-                        })
-                }
-            })
+            // connection.query("SELECT id FROM users WHERE email=?", [result.email], function (err, res){
+            //     if(res.length){console.log("exist")}
+            //     else{
+            //         const user = [result.name, result.lastname, result.email, result.password];
+            //         connection.query("INSERT INTO `users`(`name`, `lastname`, `email`, `password`) VALUES (?,?,?,?)", user,
+            //             function (error, result, metadata) {
+            //                 console.log(error);
+            //                 console.log(result);
+            //             })
+            //     }
+            // })
             connection.query("SELECT * FROM users WHERE email=? AND password=?", [result.email, result.password], function (err, res) {
                 if (res.length){
                     console.log('Login successful')

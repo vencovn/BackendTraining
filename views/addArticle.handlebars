@@ -1,0 +1,33 @@
+<h1 class="text-center mb-4">Add an article</h1>
+<form onsubmit="sendForm(this); return false;">
+    <div class="mb-3">
+        <input name="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="mb-3">
+        <textarea name="content" class="form-control" placeholder="Content"></textarea>
+    </div>
+    <div class="mb-3">
+        <input name="author" class="form-control" placeholder="Author">
+    </div>
+    <div class="mb-3">
+        <input type="submit" class="form-control btn btn-primary" value="Submit">
+    </div>
+</form>
+<script>
+    // let info = document.getElementById('info');
+    function sendForm(form) {
+        const formData = new FormData(form);
+        fetch('/addArticle', {
+            method: 'post',
+            body: formData
+        })
+        .then(response => response.text())
+        /*.then(result => {
+            if (result === 'exist') {
+                info.innerText = 'such user already exist';
+            } else if (result === 'success') {
+                location.href = '/login';
+            }
+        })*/
+    }
+</script>

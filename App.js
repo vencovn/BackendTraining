@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const handlebars = require('express-handlebars');
 const {engine} = require("express-handlebars");
 const uuid = require('uuid');
+const fs = require('fs');
 const app = express()
 const port = 3000
 
@@ -110,14 +111,17 @@ app.post('/login', multer().fields([]), (req, res) => {
 
 app.post('/addArticle', multer().fields([]), (req, res) => {
     const root = parse(req.body.content);
-    console.log(root.querySelectorAll('img').getAttribute)
-    const article = [req.body.title, req.body.content, req.body.author];
-    console.log(article)
-    connection.query("INSERT INTO `articles`(`title`, `content`, `author`) VALUES (?,?,?)", article, function (error, result){
-        console.log(error);
-        console.log(result);
-        res.send('success');
-    })
+   let imageBase64 = root.querySelector("img").getAttribute('src');
+   let imageName = Date.now()+"."+imageBase64.split(',')[0].split('/')[1].split(';')[0];
+   let buff = new Buffer (imageBase64.split(',')[1], 'base64');
+   fs.writeFileSync(`public/img/contentImage/${imageName}`, buff);
+   root.querySelector('img').setAttribute('src', `/img/contentImage/${imageName}`);
+   console.log(root.toString());
+    res.json({result: "success"});
+    /*const article = [req.body.title, req.body.content, req.body.author];
+    connection.query("INSERT INTO `articles`(`title`, `content`, `author`) VALUES (?,?,?)", article, () => {
+        res.json({result: "success"});
+    })*/
 })
 
 app.get('/logout', (req, res)=> {

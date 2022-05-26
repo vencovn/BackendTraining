@@ -1,3 +1,4 @@
+const { parse } = require ('node-html-parser');
 const hmacSHA512 = require ('crypto-js/hmac-sha512');
 const express = require('express');
 const session = require('express-session');
@@ -22,13 +23,6 @@ const connection = mysql.createConnection({
     database: "users",
     password: ""
 });
-
-const connectionArticle = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "articles",
-    password: ""
-})
 
 app.use(
     session({
@@ -115,9 +109,11 @@ app.post('/login', multer().fields([]), (req, res) => {
 })
 
 app.post('/addArticle', multer().fields([]), (req, res) => {
+    const root = parse(req.body.content);
+    console.log(root.querySelectorAll('img').getAttribute)
     const article = [req.body.title, req.body.content, req.body.author];
     console.log(article)
-    connectionArticle.query("INSERT INTO `articles`(`title`, `content`, `author`) VALUES (?,?,?)", article, function (error, result){
+    connection.query("INSERT INTO `articles`(`title`, `content`, `author`) VALUES (?,?,?)", article, function (error, result){
         console.log(error);
         console.log(result);
         res.send('success');
